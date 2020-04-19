@@ -1,10 +1,14 @@
-FROM python:3-slim
+FROM ubuntu:rolling
+
+RUN apt-get update && \
+    apt-get install -y rtl-433 python3-pip
 
 COPY . /src
 
-RUN pip install --upgrade /src && \
-    cp /usr/local/bin/eagle_exporter /eagle_exporter
+RUN pip3 install --upgrade /src
 
-EXPOSE 9597
+COPY run.sh /run.sh
 
-ENTRYPOINT ["/eagle_exporter"]
+EXPOSE 9433
+
+ENTRYPOINT ["/run.sh"]
